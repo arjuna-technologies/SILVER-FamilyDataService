@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+
+<!--                                                                                                     -->
+<!-- Copyright (c) 2017, Arjuna Technologies Limited, Newcastle-upon-Tyne, England. All rights reserved. -->
+<!--                                                                                                     -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.arjuna.silver.dataservice</groupId>
+        <artifactId>system</artifactId>
+        <version>1.0.0-dev</version>
+    </parent>
+
+    <artifactId>dataservice-ear</artifactId>
+
+    <packaging>ear</packaging>
+
+    <name>Data Service EAR</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.neo4j.driver</groupId>
+            <artifactId>neo4j-java-driver</artifactId>
+            <version>1.4.4</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.silver.dataservice</groupId>
+            <artifactId>dataservice-common</artifactId>
+            <version>${version.com.arjuna.silver}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.silver.dataservice</groupId>
+            <artifactId>dataservice-graph</artifactId>
+            <version>${version.com.arjuna.silver}</version>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.silver.dataservice</groupId>
+            <artifactId>dataservice-ws</artifactId>
+            <version>${version.com.arjuna.silver}</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <configuration>
+                    <finalName>dataservice</finalName>
+                    <finalMapping>no-version</finalMapping>
+                    <modules>
+                        <jarModule>
+                            <groupId>org.neo4j.driver</groupId>
+                            <artifactId>neo4j-java-driver</artifactId>
+                            <includeInApplicationXml>true</includeInApplicationXml>
+                        </jarModule>
+                        <jarModule>
+                            <groupId>com.arjuna.silver.dataservice</groupId>
+                            <artifactId>dataservice-common</artifactId>
+                            <bundleFileName>dataservice-common.jar</bundleFileName>
+                            <includeInApplicationXml>true</includeInApplicationXml>
+                        </jarModule>
+                        <ejbModule>
+                            <groupId>com.arjuna.silver.dataservice</groupId>
+                            <artifactId>dataservice-graph</artifactId>
+                            <bundleFileName>dataservice-graph.jar</bundleFileName>
+                        </ejbModule>
+                        <webModule>
+                            <groupId>com.arjuna.silver.dataservice</groupId>
+                            <artifactId>dataservice-ws</artifactId>
+                            <bundleFileName>dataservice-ws.war</bundleFileName>
+                            <contextRoot>/dataservice</contextRoot>
+                        </webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

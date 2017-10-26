@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--                                                                                                     -->
+<!-- Copyright (c) 2017, Arjuna Technologies Limited, Newcastle-upon-Tyne, England. All rights reserved. -->
+<!--                                                                                                     -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.arjuna.silver.dataservice</groupId>
+        <artifactId>system</artifactId>
+        <version>1.0.0-dev</version>
+    </parent>
+
+    <artifactId>dataservice-ws</artifactId>
+
+    <packaging>war</packaging>
+
+    <name>Data Service WS</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.spec.javax.servlet</groupId>
+            <artifactId>jboss-servlet-api_${servlet-api.version}_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jackson2-provider</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.ejb</groupId>
+            <artifactId>jboss-ejb-api_${ejb-api.version}_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.thetransactioncompany</groupId>
+            <artifactId>cors-filter</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.silver.dataservice</groupId>
+            <artifactId>dataservice-common</artifactId>
+            <version>${version.com.arjuna.silver}</version>
+            <scope>provided</scope>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.silver.dataservice</groupId>
+            <artifactId>dataservice-graph</artifactId>
+            <version>${version.com.arjuna.silver}</version>
+            <scope>provided</scope>
+            <type>ejb</type>
+        </dependency>
+    </dependencies>
+</project>
