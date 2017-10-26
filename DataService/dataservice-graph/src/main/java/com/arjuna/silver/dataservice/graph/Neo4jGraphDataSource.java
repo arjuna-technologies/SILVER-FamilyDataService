@@ -56,7 +56,7 @@ public class Neo4jGraphDataSource implements GraphDataSource
     @Override
     public void processData(String dataSourceId, Map<String, Object> queryParams, PrintWriter writer)
     {
-        logger.log(Level.FINE, "Neo4jGraphDataSource.processData");
+        logger.log(Level.WARNING, "Neo4jGraphDataSource.processData: " + dataSourceId + " - " + queryParams);
 
         try
         {
@@ -65,11 +65,14 @@ public class Neo4jGraphDataSource implements GraphDataSource
 
             StatementResult result = session.run("MATCH (a:Person) WHERE a.name = {name} RETURN a.name AS name, a.title AS title", queryParams);
 
+            writer.print('[');
             while (result.hasNext())
             {
                 Record record = result.next();
+
                 writer.println(record.get("title").asString() + " " + record.get("name").asString());
             }
+            writer.print(']');
             writer.flush();
 
             session.close();

@@ -1,0 +1,15 @@
+<mat-card>
+    <mat-card-title>Querys</mat-card-title>
+    <mat-card-content fxFill>
+        <div fxLayout="column" fxLayoutAlign="start stretch">
+            <mat-form-field fxFlex>
+                <mat-select placeholder="State">
+                    <mat-option *ngFor="let query of querys" [value]="query">{{ query }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+                <textarea matInput placeholder="Query"></textarea>
+            </mat-form-field>
+        </div>
+    </mat-card-content>
+</mat-card>
