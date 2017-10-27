@@ -20,14 +20,14 @@ import javax.ws.rs.core.MediaType;
 import com.arjuna.silver.dataservice.common.GraphDataSourceDef;
 import com.arjuna.silver.dataservice.store.GraphDataSourceDefStore;
 
-@Path("/data")
+@Path("/defs")
 @Stateless
 public class GraphDataSourceDefWS
 {
     private static final Logger logger = Logger.getLogger(GraphDataSourceDefWS.class.getName());
 
     @GET
-    @Path("/defs")
+    @Path("/querys")
     @Produces(MediaType.APPLICATION_JSON)
     public List<String> getGraphDataSourceDefIds()
     {
@@ -46,7 +46,7 @@ public class GraphDataSourceDefWS
     }
 
     @GET
-    @Path("/def/{id}")
+    @Path("/query/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public GraphDataSourceDefDTO getGraphDataSourceDef(@PathParam("id") String id)
     {
@@ -86,7 +86,7 @@ public class GraphDataSourceDefWS
     }
 
     @POST
-    @Path("/def/{id}")
+    @Path("/query/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void postGraphDataSourceDef(@PathParam("id") String id, GraphDataSourceDefDTO graphDataSourceDefDTO)
