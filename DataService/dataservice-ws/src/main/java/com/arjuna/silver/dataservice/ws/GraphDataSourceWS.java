@@ -31,9 +31,9 @@ import javax.ws.rs.core.UriInfo;
 
 @Path("/data")
 @Stateless
-public class DataSourceWS
+public class GraphDataSourceWS
 {
-    private static final Logger logger = Logger.getLogger(DataSourceWS.class.getName());
+    private static final Logger logger = Logger.getLogger(GraphDataSourceWS.class.getName());
 
     @GET
     @Path("/data/{datasourceid}")
@@ -42,7 +42,7 @@ public class DataSourceWS
     {
         try
         {
-            logger.log(Level.WARNING, "DataSourceWS.getData: [" + dataSourceId + "]");
+            logger.log(Level.WARNING, "GraphDataSourceWS.getData: [" + dataSourceId + "]");
 
             MultivaluedMap<String, String> rawQueryParams = uriInfo.getQueryParameters();
             Map<String, Object>            queryParams    = new HashMap<String, Object>();
@@ -54,11 +54,11 @@ public class DataSourceWS
                     queryParams.put(key, values.get(0));
                 else if (values.size() > 1)
                 {
-                    logger.log(Level.WARNING, "DataSourceWS.getData: multiple values for \"" + key + "\"");
+                    logger.log(Level.WARNING, "GraphDataSourceWS.getData: multiple values for \"" + key + "\"");
                     queryParams.put(key, values.get(0));
                 }
                 else
-                    logger.log(Level.WARNING, "DataSourceWS.getData: no value for \"" + key + "\"");
+                    logger.log(Level.WARNING, "GraphDataSourceWS.getData: no value for \"" + key + "\"");
             }
 
             StreamingOutput stream = new StreamingOutput()
@@ -77,7 +77,7 @@ public class DataSourceWS
         }
         catch (Throwable throwable)
         {
-            logger.log(Level.WARNING, "DataSourceWS.getData: Unexpected Problem", throwable);
+            logger.log(Level.WARNING, "GraphDataSourceWS.getData: Unexpected Problem", throwable);
 
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
