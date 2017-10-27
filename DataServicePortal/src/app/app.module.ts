@@ -9,23 +9,37 @@ import { MatSelectModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
+import { DatasourcesConfigService } from './config/datasources-config.service';
+import { QueryDefLoaderService } from './datasources/query-def-loader.service';
 
 import 'hammerjs';
 
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    FlexLayoutModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+@NgModule
+({
+    declarations:
+    [
+        AppComponent
+    ],
+    imports:
+    [
+        BrowserModule,
+        BrowserAnimationsModule,
+        FlexLayoutModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule
+    ],
+    providers:
+    [
+        DatasourcesConfigService,
+        QueryDefLoaderService
+    ],
+    bootstrap:
+    [
+        AppComponent
+    ]
 })
-export class AppModule { }
+export class AppModule
+{
+}
