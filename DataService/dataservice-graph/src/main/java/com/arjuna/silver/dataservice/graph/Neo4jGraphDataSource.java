@@ -87,9 +87,8 @@ public class Neo4jGraphDataSource implements GraphDataSource
                     else
                         writer.print(',');
 
-                    writer.print('"');
                     writeKey(pair.key(), writer);
-                    writer.print("\":");
+                    writer.print(":");
                     writeValue(pair.value(), writer);
                 }
             }
@@ -109,12 +108,16 @@ public class Neo4jGraphDataSource implements GraphDataSource
 
     private void writeKey(String key, PrintWriter writer)
     {
+        writer.print('"');
         writer.print(key);
+        writer.print('"');
     }
 
     private void writeValue(Value value, PrintWriter writer)
     {
+        writer.print('"');
         writer.print(value.asString());
+        writer.print('"');
     }
 
     private String _neo4jUsername;
