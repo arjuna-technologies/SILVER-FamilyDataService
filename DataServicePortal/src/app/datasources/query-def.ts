@@ -7,29 +7,29 @@
 
 import { IOObject } from './io-object';
 
-export class ConsentTypeDef implements IOObject
+export class QueryDef implements IOObject
 {
-    public id:          string;
-    public name:        string;
-    public rendererIds: string[];
+    public id:    string;
+    public name:  string;
+    public query: string;
 
     public fromObject(object: any): boolean
     {
-        this.id          = object.id;
-        this.name        = object.name;
-        this.rendererIds = object.renderer_ids;
+        this.id    = object.id;
+        this.name  = object.name;
+        this.query = object.query;
 
         return true;
     }
 
     public toObject(): any
     {
-        const consentTypeDefObject: any = { };
+        const queryDefObject: any = { };
 
-        consentTypeDefObject.id           = this.id;
-        consentTypeDefObject.name         = this.name;
-        consentTypeDefObject.renderer_ids = this.rendererIds;
+        queryDefObject.id    = this.id;
+        queryDefObject.name  = this.name;
+        queryDefObject.query = this.query;
 
-        return consentTypeDefObject;
+        return queryDefObject;
     }
 }
