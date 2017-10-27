@@ -22,6 +22,8 @@ import org.neo4j.driver.v1.GraphDatabase;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
+import org.neo4j.driver.v1.Value;
+import org.neo4j.driver.v1.util.Pair;
 
 @Stateless(name="Neo4jGraphDataSource")
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -56,7 +58,7 @@ public class Neo4jGraphDataSource implements GraphDataSource
     @Override
     public void processData(String dataSourceId, Map<String, Object> queryParams, PrintWriter writer)
     {
-        logger.log(Level.WARNING, "Neo4jGraphDataSource.processData: " + dataSourceId + " - " + queryParams);
+        logger.log(Level.FINE, "Neo4jGraphDataSource.processData: " + dataSourceId + " - " + queryParams);
 
         try
         {
@@ -65,14 +67,33 @@ public class Neo4jGraphDataSource implements GraphDataSource
 
             StatementResult result = session.run("MATCH (a:Person) WHERE a.name = {name} RETURN a.name AS name, a.title AS title", queryParams);
 
+            boolean firstRecord = true;
             writer.print('[');
             while (result.hasNext())
             {
+                if (firstRecord)
+                    firstRecord = false;
+                else
+                    writer.print(',');
+
                 Record record = result.next();
 
-                writer.println(record.get("title").asString() + " " + record.get("name").asString());
+                boolean pairRecord = true;
+                writer.print('[');
+                for (Pair<String, Value> pair: record.fields())
+                {
+                    if (pairRecord)
+                        pairRecord = false;
+                    else
+                        writer.print(',');
+
+                    writer.print('"');
+                    writeKey(pair.key(), writer);
+                    writer.print("\":");
+                    writeValue(pair.value(), writer);
+                }
             }
-            writer.print(']');
+            writer.println(']');
             writer.flush();
 
             session.close();
@@ -84,6 +105,16 @@ public class Neo4jGraphDataSource implements GraphDataSource
 
             throw throwable;
         }
+    }
+
+    private void writeKey(String key, PrintWriter writer)
+    {
+        writer.print(key);
+    }
+
+    private void writeValue(Value value, PrintWriter writer)
+    {
+        writer.print(value.asString());
     }
 
     private String _neo4jUsername;
