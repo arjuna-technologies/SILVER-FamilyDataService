@@ -25,9 +25,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import com.arjuna.silver.dataservice.graph.GraphDataSource;
 import javax.ws.rs.core.StreamingOutput;
 import javax.ws.rs.core.UriInfo;
+import com.arjuna.silver.dataservice.common.InvalidGraphDataSourceException;
+import com.arjuna.silver.dataservice.graph.GraphDataSource;
 
 @Path("/data")
 @Stateless
@@ -69,7 +70,14 @@ public class GraphDataSourceWS
                 {
                     PrintWriter writer = new PrintWriter(new OutputStreamWriter(outputStream));
 
-                    _graphDataSource.processData(dataSourceId, queryParams, writer);
+                    try
+                    {
+                        _graphDataSource.processData(dataSourceId, queryParams, writer);
+                    }
+                    catch (InvalidGraphDataSourceException invalidGraphDataSourceException)
+                    {
+                        logger.log(Level.WARNING, "GraphDataSourceWS.getData: Unexpected Problem", invalidGraphDataSourceException);
+                    }
                 }
             };
 

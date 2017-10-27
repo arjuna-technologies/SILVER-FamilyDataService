@@ -36,5 +36,11 @@
             <version>${version.com.arjuna.silver}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.arjuna.silver.dataservice</groupId>
+            <artifactId>dataservice-store</artifactId>
+            <version>${version.com.arjuna.silver}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

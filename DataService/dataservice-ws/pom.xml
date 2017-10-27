@@ -54,6 +54,13 @@
         </dependency>
         <dependency>
             <groupId>com.arjuna.silver.dataservice</groupId>
+            <artifactId>dataservice-store</artifactId>
+            <version>${version.com.arjuna.silver}</version>
+            <scope>provided</scope>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.silver.dataservice</groupId>
             <artifactId>dataservice-graph</artifactId>
             <version>${version.com.arjuna.silver}</version>
             <scope>provided</scope>

@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -24,6 +25,9 @@ import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.util.Pair;
+import com.arjuna.silver.dataservice.common.GraphDataSourceDef;
+import com.arjuna.silver.dataservice.common.InvalidGraphDataSourceException;
+import com.arjuna.silver.dataservice.store.GraphDataSourceDefStore;
 
 @Stateless(name="Neo4jGraphDataSource")
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -57,46 +61,62 @@ public class Neo4jGraphDataSource implements GraphDataSource
 
     @Override
     public void processData(String dataSourceId, Map<String, Object> queryParams, PrintWriter writer)
+        throws InvalidGraphDataSourceException
     {
         logger.log(Level.FINE, "Neo4jGraphDataSource.processData: " + dataSourceId + " - " + queryParams);
 
         try
         {
-            Driver  driver  = GraphDatabase.driver("bolt://" + _neo4jHostName + ":" + _neo4jPortNumber, AuthTokens.basic(_neo4jUsername, _neo4jPassword));
-            Session session = driver.session();
-
-            StatementResult result = session.run("MATCH (a:Person) WHERE a.name = {name} RETURN a.name AS name, a.title AS title", queryParams);
-
-            boolean firstRecord = true;
-            writer.print('[');
-            while (result.hasNext())
+            GraphDataSourceDef graphDataSourceDef = _graphDataSourceDefStore.getGraphDataSourceDef(dataSourceId);
+            
+            if (graphDataSourceDef != null)
             {
-                if (firstRecord)
-                    firstRecord = false;
-                else
-                    writer.print(',');
+                Driver  driver  = GraphDatabase.driver("bolt://" + _neo4jHostName + ":" + _neo4jPortNumber, AuthTokens.basic(_neo4jUsername, _neo4jPassword));
+                Session session = driver.session();
 
-                Record record = result.next();
+                StatementResult result = session.run(graphDataSourceDef.getQuery(), queryParams);
 
-                boolean pairRecord = true;
+                boolean firstRecord = true;
                 writer.print('[');
-                for (Pair<String, Value> pair: record.fields())
+                while (result.hasNext())
                 {
-                    if (pairRecord)
-                        pairRecord = false;
+                    if (firstRecord)
+                        firstRecord = false;
                     else
                         writer.print(',');
 
-                    writeKey(pair.key(), writer);
-                    writer.print(":");
-                    writeValue(pair.value(), writer);
-                }
-            }
-            writer.println(']');
-            writer.flush();
+                    Record record = result.next();
 
-            session.close();
-            driver.close();
+                    boolean pairRecord = true;
+                    writer.print('[');
+                    for (Pair<String, Value> pair: record.fields())
+                    {
+                        if (pairRecord)
+                            pairRecord = false;
+                        else
+                            writer.print(',');
+
+                        writeKey(pair.key(), writer);
+                        writer.print(":");
+                        writeValue(pair.value(), writer);
+                    }
+                }
+                writer.println(']');
+                writer.flush();
+    
+                session.close();
+                driver.close();
+            }
+            else
+            {
+                writer.flush();
+
+                throw new InvalidGraphDataSourceException("Unable to find DataSource", dataSourceId);
+            }
+        }
+        catch (InvalidGraphDataSourceException invalidGraphDataSourceException)
+        {
+            throw invalidGraphDataSourceException;
         }
         catch (Throwable throwable)
         {
@@ -124,4 +144,7 @@ public class Neo4jGraphDataSource implements GraphDataSource
     private String _neo4jPassword;
     private String _neo4jHostName;
     private String _neo4jPortNumber;
+
+    @EJB(beanName="JPAGraphDataSourceDefStore")
+    private GraphDataSourceDefStore _graphDataSourceDefStore;
 }

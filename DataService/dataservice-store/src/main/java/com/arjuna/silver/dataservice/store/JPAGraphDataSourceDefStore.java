@@ -32,7 +32,7 @@ public class JPAGraphDataSourceDefStore implements GraphDataSourceDefStore
 
         try
         {
-            TypedQuery<GraphDataSourceDefEntity> query = _entityManager.createQuery("SELECT dsd FROM GraphDataSourceDefEntity AS dsd", GraphDataSourceDefEntity.class);
+            TypedQuery<GraphDataSourceDefEntity> query = _entityManager.createQuery("SELECT gdsd FROM GraphDataSourceDefEntity AS gdsd", GraphDataSourceDefEntity.class);
 
             List<String> ids = new LinkedList<String>();
             for (GraphDataSourceDefEntity dataSourceDef: query.getResultList())
