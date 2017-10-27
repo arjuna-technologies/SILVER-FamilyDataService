@@ -76,7 +76,7 @@ public class GraphDataSourceWS
                     }
                     catch (InvalidGraphDataSourceException invalidGraphDataSourceException)
                     {
-                        logger.log(Level.WARNING, "GraphDataSourceWS.getData: Unexpected Problem", invalidGraphDataSourceException);
+                        logger.log(Level.WARNING, "GraphDataSourceWS.getData: Problem: " + invalidGraphDataSourceException.getMessage());
                     }
                 }
             };

@@ -10,7 +10,7 @@ public class InvalidGraphDataSourceException extends Exception
 
     public InvalidGraphDataSourceException(String reason, String id)
     {
-        super(reason + ": name \"" + id + "\"");
+        super(reason + ": \"" + id + "\"");
 
         _reason = reason;
         _id     = id;
