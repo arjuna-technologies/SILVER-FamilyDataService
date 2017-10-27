@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material';
 import { MatInputModule } from '@angular/material';
+import { MatIconModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { DatasourcesConfigService } from './config/datasources-config.service';
@@ -28,7 +29,8 @@ import 'hammerjs';
         MatCardModule,
         MatFormFieldModule,
         MatSelectModule,
-        MatInputModule
+        MatInputModule,
+        MatIconModule
     ],
     providers:
     [
