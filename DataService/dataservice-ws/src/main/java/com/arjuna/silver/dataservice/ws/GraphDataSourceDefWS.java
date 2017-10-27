@@ -20,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 import com.arjuna.silver.dataservice.common.GraphDataSourceDef;
 import com.arjuna.silver.dataservice.store.GraphDataSourceDefStore;
 
-@Path("/defs")
+@Path("/control")
 @Stateless
 public class GraphDataSourceDefWS
 {
