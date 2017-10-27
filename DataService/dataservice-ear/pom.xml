@@ -34,6 +34,12 @@
         </dependency>
         <dependency>
             <groupId>com.arjuna.silver.dataservice</groupId>
+            <artifactId>dataservice-store</artifactId>
+            <version>${version.com.arjuna.silver}</version>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.silver.dataservice</groupId>
             <artifactId>dataservice-graph</artifactId>
             <version>${version.com.arjuna.silver}</version>
             <type>ejb</type>
@@ -70,6 +76,11 @@
                             <groupId>com.arjuna.silver.dataservice</groupId>
                             <artifactId>dataservice-graph</artifactId>
                             <bundleFileName>dataservice-graph.jar</bundleFileName>
+                        </ejbModule>
+                        <ejbModule>
+                            <groupId>com.arjuna.silver.dataservice</groupId>
+                            <artifactId>dataservice-store</artifactId>
+                            <bundleFileName>dataservice-store.jar</bundleFileName>
                         </ejbModule>
                         <webModule>
                             <groupId>com.arjuna.silver.dataservice</groupId>
