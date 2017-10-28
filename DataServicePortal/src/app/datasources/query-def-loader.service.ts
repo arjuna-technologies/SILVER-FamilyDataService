@@ -11,6 +11,7 @@ import { Headers, Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { QueryDef } from './query-def';
+import { QuerySummaryDef } from './query-summary-def';
 import { DatasourcesConfigService } from '../config/datasources-config.service';
 
 @Injectable()
@@ -26,6 +27,14 @@ export class QueryDefLoaderService
                    .toPromise()
                    .then((response) => Promise.resolve(this.getQueryDefIdsSuccessHandler(response)))
                    .catch((response) => Promise.resolve(this.getQueryDefIdsErrorHandler(response)));
+    }
+
+    public getQueryDefSummarys(): Promise<QuerySummaryDef[]>
+    {
+        return this.http.get(this.datasourcesConfigService.listQueryDefLoaderBaseURL)
+                   .toPromise()
+                   .then((response) => Promise.resolve(this.getQuerySummaryDefsSuccessHandler(response)))
+                   .catch((response) => Promise.resolve(this.getQuerySummaryDefsErrorHandler(response)));
     }
 
     public getQueryDef(id: string): Promise<QueryDef>
@@ -46,22 +55,39 @@ export class QueryDefLoaderService
 
     private getQueryDefIdsSuccessHandler(response: Response): String[]
     {
-        const queryDefs: QueryDef[] = [];
+        const queryDefIds: String[] = [];
 
-        for (const queryDefObject of response.json())
-        {
-             const queryDef = new QueryDef();
+        for (const queryDefIdObject of response.json())
+             queryDefIds.push(queryDefIdObject);
 
-             queryDef.fromObject(queryDefObject);
-             queryDefs.push(queryDef);
-        }
-
-        return queryDefs;
+        return queryDefIds;
     }
 
     private getQueryDefIdsErrorHandler(error: Response | any): String[]
     {
         console.log('Error while loading Query Ids: ' + (error.message || error));
+
+        return [];
+    }
+
+    private getQuerySummaryDefsSuccessHandler(response: Response): QuerySummaryDef[]
+    {
+        const querySummaryDefs: QuerySummaryDef[] = [];
+
+        for (const querySummaryDefObject of response.json())
+        {
+             const querySummaryDef = new QuerySummaryDef();
+
+             querySummaryDef.fromObject(querySummaryDefObject);
+             querySummaryDefs.push(querySummaryDef);
+        }
+
+        return querySummaryDefs;
+    }
+
+    private getQuerySummaryDefsErrorHandler(error: Response | any): QuerySummaryDef[]
+    {
+        console.log('Error while loading Query Summaries: ' + (error.message || error));
 
         return [];
     }
