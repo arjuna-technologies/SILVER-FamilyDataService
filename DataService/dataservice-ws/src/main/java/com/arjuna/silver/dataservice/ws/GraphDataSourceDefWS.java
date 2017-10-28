@@ -5,6 +5,7 @@
 package com.arjuna.silver.dataservice.ws;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,15 +30,26 @@ public class GraphDataSourceDefWS
     @GET
     @Path("/querys")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<GraphDataSourceSummaryDefs> getGraphDataSourceSummaryDefs()
+    public List<GraphDataSourceSummaryDefDTO> getGraphDataSourceSummaryDefs()
     {
         try
         {
             logger.log(Level.FINE, "GraphDataSourceDefWS.getGraphDataSourceSummaryDefs");
 
-            List<GraphDataSourceDef> graphDataSourceDefs = _graphDataSourceDefStore.getGraphDataSourceDefs();
+            List<GraphDataSourceDef>           graphDataSourceDefs           = _graphDataSourceDefStore.getGraphDataSourceDefs();
+            List<GraphDataSourceSummaryDefDTO> graphDataSourceSummaryDefDTOs = new LinkedList<GraphDataSourceSummaryDefDTO>();
 
-            return _graphDataSourceDefStore.getGraphDataSourceDefs();
+            for (GraphDataSourceDef graphDataSourceDef: graphDataSourceDefs)
+            {
+            	GraphDataSourceSummaryDefDTO graphDataSourceSummaryDefDTO = new GraphDataSourceSummaryDefDTO();
+
+                graphDataSourceSummaryDefDTO.setId(graphDataSourceDef.getId());
+                graphDataSourceSummaryDefDTO.setName(graphDataSourceDef.getName());
+
+                graphDataSourceSummaryDefDTOs.add(graphDataSourceSummaryDefDTO);
+            }
+
+            return graphDataSourceSummaryDefDTOs;
         }
         catch (Throwable throwable)
         {

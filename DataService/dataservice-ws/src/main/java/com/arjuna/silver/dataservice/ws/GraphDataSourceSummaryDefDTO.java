@@ -15,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 })
 public class GraphDataSourceSummaryDefDTO implements Serializable
 {
-    public GraphDataSourceSummaryDefDTO()
+	private static final long serialVersionUID = 3944433638028814484L;
+
+	public GraphDataSourceSummaryDefDTO()
     {
         _id    = null;
         _name  = null;
     }
 
-    public GraphDataSourceDefDTO(String id, String name)
+    public GraphDataSourceSummaryDefDTO(String id, String name)
     {
         _id    = id;
         _name  = name;

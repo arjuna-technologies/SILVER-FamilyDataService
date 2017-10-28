@@ -11,6 +11,8 @@ public interface GraphDataSourceDefStore
 {
     public List<String> getGraphDataSourceDefIds();
 
+    public List<GraphDataSourceDef> getGraphDataSourceDefs();
+
     public GraphDataSourceDef getGraphDataSourceDef(String id);
 
     public boolean setGraphDataSourceDef(String id, GraphDataSourceDef graphDataSourceDef);

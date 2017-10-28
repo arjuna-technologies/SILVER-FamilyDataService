@@ -46,6 +46,36 @@ public class JPAGraphDataSourceDefStore implements GraphDataSourceDefStore
             return null;
         }
     }
+    
+    @Override
+    public List<GraphDataSourceDef> getGraphDataSourceDefs()
+    {
+        logger.log(Level.FINE, "JPAGraphDataSourceDefStore.getGraphDataSourceDefs");
+
+        try
+        {
+            TypedQuery<GraphDataSourceDefEntity> query = _entityManager.createQuery("SELECT gdsd FROM GraphDataSourceDefEntity AS gdsd", GraphDataSourceDefEntity.class);
+
+            List<GraphDataSourceDef> graphDataSourceDefs = new LinkedList<GraphDataSourceDef>();
+            for (GraphDataSourceDefEntity graphDataSourceDefEntity: query.getResultList())
+            {
+                GraphDataSourceDef graphDataSourceDef = new GraphDataSourceDef();
+
+                graphDataSourceDef.setId(graphDataSourceDefEntity.getId());
+                graphDataSourceDef.setName(graphDataSourceDefEntity.getName());
+                graphDataSourceDef.setQuery(graphDataSourceDefEntity.getQuery());
+
+                graphDataSourceDefs.add(graphDataSourceDef);
+            }
+
+            return graphDataSourceDefs;
+        }
+        catch (Throwable throwable)
+        {
+            throwable.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     public GraphDataSourceDef getGraphDataSourceDef(String id)
