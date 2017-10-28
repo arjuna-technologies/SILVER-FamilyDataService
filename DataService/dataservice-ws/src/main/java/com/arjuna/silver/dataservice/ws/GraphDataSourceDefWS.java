@@ -29,17 +29,19 @@ public class GraphDataSourceDefWS
     @GET
     @Path("/querys")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<String> getGraphDataSourceDefIds()
+    public List<GraphDataSourceSummaryDefs> getGraphDataSourceSummaryDefs()
     {
         try
         {
-            logger.log(Level.FINE, "GraphDataSourceDefWS.getGraphDataSourceDefs");
+            logger.log(Level.FINE, "GraphDataSourceDefWS.getGraphDataSourceSummaryDefs");
 
-            return _graphDataSourceDefStore.getGraphDataSourceDefIds();
+            List<GraphDataSourceDef> graphDataSourceDefs = _graphDataSourceDefStore.getGraphDataSourceDefs();
+
+            return _graphDataSourceDefStore.getGraphDataSourceDefs();
         }
         catch (Throwable throwable)
         {
-            logger.log(Level.WARNING, "GraphDataSourceDefWS.getGraphDataSourceDefs: Unable to metadata", throwable);
+            logger.log(Level.WARNING, "GraphDataSourceDefWS.getGraphDataSourceSummaryDefs: Unable to Graph Data Source Summary Defs", throwable);
 
             return Collections.emptyList();
         }
