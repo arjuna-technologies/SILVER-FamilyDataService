@@ -15,8 +15,8 @@ import { QueryDefLoaderService } from './datasources/query-def-loader.service';
 })
 export class AppComponent
 {
-    public querySummaries: QuerySummaryModel[];
-    public selectedQuery:  QueryModel;
+    public querySummaries:  QuerySummaryModel[];
+    public selectedQuery:   QueryModel;
 
     public constructor(private queryDefLoaderService: QueryDefLoaderService)
     {
@@ -33,11 +33,21 @@ export class AppComponent
             .catch(() => { this.processQueryDefSummarys([ ]) } );
     }
 
-    public doQueryChange(): void
+    public doQueryChange(event: any): void
     {
-        this.queryDefLoaderService.getQueryDef('9999e042-3e08-4dba-9ee9-adcf5e8e9206')
+        this.queryDefLoaderService.getQueryDef(event.value)
             .then((queryDef) => { this.processQueryDef(queryDef) })
             .catch(() => { this.processQueryDef(null) } );
+    }
+
+    public doSaveQueryDef(): void
+    {
+        console.log('Save: ' + JSON.stringify(this.selectedQuery));
+    }
+
+    public doRemoveQueryDef(): void
+    {
+        console.log('Remove: '+ JSON.stringify(this.selectedQuery));
     }
 
     private processQueryDefSummarys(querySummaryDefs: QuerySummaryDef[]): void

@@ -2,22 +2,28 @@
     <mat-card-title>Querys</mat-card-title>
     <mat-card-content fxFill>
         <div fxLayout="column" fxLayoutAlign="start stretch">
-            <mat-form-field fxFlex>
-                <mat-select placeholder="Query" (change)="doQueryChange()">
+            <mat-form-field fxFlex="15">
+                <mat-select placeholder="Query" (change)="doQueryChange($event)">
                     <mat-option *ngFor="let querySummary of querySummaries" [value]="querySummary.id">{{ querySummary.name }}</mat-option>
                 </mat-select>
             </mat-form-field>
-            <div fxLayout="row" fxFlex fxLayoutAlign="space-between start">
+            <div fxLayout="row" fxFlex="15" fxLayoutAlign="space-between start">
                 <mat-form-field fxFlex="65">
-                    <input matInput placeholder="Name" [value]="selectedQuery.name">
+                    <input matInput placeholder="Name" [(ngModel)]="selectedQuery.name">
                 </mat-form-field>
                 <mat-form-field fxFlex="30">
-                    <input matInput readonly placeholder="Id" [value]="selectedQuery.id">
+                    <input matInput readonly placeholder="Id" [(ngModel)]="selectedQuery.id">
                 </mat-form-field>
             </div>
-            <mat-form-field fxFill>
-                <textarea matInput matTextareaAutosize matAutosizeMinRows="16" placeholder="Query" [(value)]="selectedQuery.query"></textarea>
+            <mat-form-field fxFill fxFlex>
+                <textarea matInput matTextareaAutosize matAutosizeMinRows="16" placeholder="Query" [(ngModel)]="selectedQuery.query"></textarea>
             </mat-form-field>
         </div>
     </mat-card-content>
+    <mat-card-actions>
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+             <button mat-raised-button color="primary" [disabled]="selectedQuery.id === ''" (click)="doSaveQueryDef()"> Save </button>
+             <button mat-raised-button color="primary" [disabled]="selectedQuery.id === ''" (click)="doRemoveQueryDef()"> Remove </button>
+        </div>
+    </mat-card-actions>
 </mat-card>
