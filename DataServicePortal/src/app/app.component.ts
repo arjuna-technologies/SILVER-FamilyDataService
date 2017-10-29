@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { v4 } from 'uuid';
+
 import { QuerySummaryModel } from './model/query-summary-model';
 import { QueryModel } from './model/query-model';
 
@@ -28,26 +30,52 @@ export class AppComponent
 
     private loadQuerySummaryDef(): void
     {
+        this.querySummaries  = [];
+
         this.queryDefLoaderService.getQueryDefSummarys()
             .then((queryDefSummarys) => { this.processQueryDefSummarys(queryDefSummarys) })
-            .catch(() => { this.processQueryDefSummarys([ ]) } );
+            .catch(() => { this.processQueryDefSummarys([ ]) });
     }
 
     public doQueryChange(event: any): void
     {
+        this.selectedQuery.id    = '';
+        this.selectedQuery.name  = '';
+        this.selectedQuery.query = '';
+
         this.queryDefLoaderService.getQueryDef(event.value)
             .then((queryDef) => { this.processQueryDef(queryDef) })
-            .catch(() => { this.processQueryDef(null) } );
+            .catch(() => { this.processQueryDef(null) });
+    }
+
+    public doNewQueryDef(): void
+    {
+        this.selectedQuery.id    = v4();
+        this.selectedQuery.name  = '';
+        this.selectedQuery.query = '';
     }
 
     public doSaveQueryDef(): void
     {
-        console.log('Save: ' + JSON.stringify(this.selectedQuery));
+        const queryDef: QueryDef = new QueryDef();
+        queryDef.id    = this.selectedQuery.id;
+        queryDef.name  = this.selectedQuery.name;
+        queryDef.query = this.selectedQuery.query;
+
+        this.queryDefLoaderService.setQueryDef(this.selectedQuery.id, queryDef)
+            .then(() => { this.loadQuerySummaryDef() });
     }
 
     public doRemoveQueryDef(): void
     {
-        console.log('Remove: '+ JSON.stringify(this.selectedQuery));
+        const id = this.selectedQuery.id;
+
+        this.selectedQuery.id    = v4();
+        this.selectedQuery.name  = '';
+        this.selectedQuery.query = '';
+
+        this.queryDefLoaderService.deleteQueryDef(id)
+            .then(() => { this.loadQuerySummaryDef() });
     }
 
     private processQueryDefSummarys(querySummaryDefs: QuerySummaryDef[]): void

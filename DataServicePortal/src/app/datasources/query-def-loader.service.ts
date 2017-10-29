@@ -53,6 +53,14 @@ export class QueryDefLoaderService
                    .catch((response) => Promise.resolve(this.setQueryDefErrorHandler(response)));
     }
 
+    public deleteQueryDef(id: string): Promise<boolean>
+    {
+        return this.http.delete(this.datasourcesConfigService.deleteQueryDefLoaderBaseURL + '/' + id)
+                   .toPromise()
+                   .then((response) => Promise.resolve(this.deleteQueryDefSuccessHandler(response)))
+                   .catch((response) => Promise.resolve(this.deleteQueryDefErrorHandler(response)));
+    }
+
     private getQueryDefIdsSuccessHandler(response: Response): String[]
     {
         const queryDefIds: String[] = [];
@@ -114,6 +122,18 @@ export class QueryDefLoaderService
     }
 
     private setQueryDefErrorHandler(error: Response | any): boolean
+    {
+        console.log('Error while saving Query: ' + (error.message || error));
+
+        return false;
+    }
+
+    private deleteQueryDefSuccessHandler(response: Response): boolean
+    {
+        return true;
+    }
+
+    private deleteQueryDefErrorHandler(error: Response | any): boolean
     {
         console.log('Error while saving Query: ' + (error.message || error));
 
