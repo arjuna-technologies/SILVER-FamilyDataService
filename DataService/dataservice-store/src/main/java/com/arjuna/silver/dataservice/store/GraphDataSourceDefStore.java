@@ -16,4 +16,6 @@ public interface GraphDataSourceDefStore
     public GraphDataSourceDef getGraphDataSourceDef(String id);
 
     public boolean setGraphDataSourceDef(String id, GraphDataSourceDef graphDataSourceDef);
+
+    public boolean removeGraphDataSourceDef(String id);
 }

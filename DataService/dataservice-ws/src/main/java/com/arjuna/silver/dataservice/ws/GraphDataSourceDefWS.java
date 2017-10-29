@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -128,6 +129,27 @@ public class GraphDataSourceDefWS
         catch (Throwable throwable)
         {
             logger.log(Level.WARNING, "GraphDataSourceDefDTO.postGraphDataSourceDef: Unexpected problem", throwable);
+        }
+    }
+
+    @DELETE
+    @Path("/query/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public void deleteGraphDataSourceDef(@PathParam("id") String id)
+    {
+        logger.log(Level.FINE, "GraphDataSourceDefDTO.deleteGraphDataSourceDef [" + id + "]");
+
+        try
+        {
+            if (id == null)
+                logger.log(Level.WARNING, "GraphDataSourceDefDTO.deleteGraphDataSourceDef: Invalid parameters: id=[" + id + "]");
+            else
+                _graphDataSourceDefStore.removeGraphDataSourceDef(id);
+        }
+        catch (Throwable throwable)
+        {
+            logger.log(Level.WARNING, "GraphDataSourceDefDTO.deleteGraphDataSourceDef: Unexpected problem", throwable);
         }
     }
 

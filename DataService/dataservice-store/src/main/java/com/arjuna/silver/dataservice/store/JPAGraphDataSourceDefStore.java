@@ -143,6 +143,24 @@ public class JPAGraphDataSourceDefStore implements GraphDataSourceDefStore
         }
     }
 
+    @Override
+    public boolean removeGraphDataSourceDef(String id)
+    {
+        logger.log(Level.FINE, "JPAGraphDataSourceDefStore.setDataSourceDef: \"" + id + "\"");
+
+        try
+        {
+            _entityManager.remove(id);
+
+            return true;
+        }
+        catch (Throwable throwable)
+        {
+            throwable.printStackTrace();
+            return false;
+        }
+    }
+
     @PersistenceContext(unitName="SILVER")
     private EntityManager _entityManager;
 }
