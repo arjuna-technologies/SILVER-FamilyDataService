@@ -89,7 +89,7 @@ public class Neo4jGraphDataSource implements GraphDataSource
                     Record record = result.next();
 
                     boolean pairRecord = true;
-                    writer.print('[');
+                    writer.print('{');
                     for (Pair<String, Value> pair: record.fields())
                     {
                         if (pairRecord)
@@ -101,6 +101,7 @@ public class Neo4jGraphDataSource implements GraphDataSource
                         writer.print(":");
                         writeValue(pair.value(), session, writer);
                     }
+                    writer.print('}');
                 }
                 writer.println(']');
                 writer.flush();
@@ -136,13 +137,13 @@ public class Neo4jGraphDataSource implements GraphDataSource
 
     private void writeValue(Value value, Session session, PrintWriter writer)
     {
-        if (value.hasType(session.typeSystem().NUMBER()))
+        if (value.hasType(session.typeSystem().STRING()))
         {
             writer.print('"');
             writer.print(value.asString());
             writer.print('"');
         }
-        else if (value.hasType(session.typeSystem().NUMBER()))
+        else if (value.hasType(session.typeSystem().NODE()))
         {
             Node node = value.asNode();
 

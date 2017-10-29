@@ -46,7 +46,7 @@ public class JPAGraphDataSourceDefStore implements GraphDataSourceDefStore
             return null;
         }
     }
-    
+
     @Override
     public List<GraphDataSourceDef> getGraphDataSourceDefs()
     {
@@ -150,9 +150,16 @@ public class JPAGraphDataSourceDefStore implements GraphDataSourceDefStore
 
         try
         {
-            _entityManager.remove(id);
+            GraphDataSourceDefEntity graphDataSourceDefEntity = _entityManager.find(GraphDataSourceDefEntity.class, id);
 
-            return true;
+            if (graphDataSourceDefEntity != null)
+            {
+                _entityManager.remove(graphDataSourceDefEntity);
+
+                return true;
+            }
+            else
+                return false;
         }
         catch (Throwable throwable)
         {
