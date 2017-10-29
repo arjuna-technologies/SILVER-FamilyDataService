@@ -2,20 +2,21 @@
     <mat-card-title>Querys</mat-card-title>
     <mat-card-content fxFill>
         <div fxLayout="column" fxLayoutAlign="start stretch">
-            <div fxLayout="row" fxLayoutAlign="space-between start">
+            <mat-form-field fxFlex>
+                <mat-select placeholder="Query" (change)="doQueryChange()">
+                    <mat-option *ngFor="let querySummary of querySummaries" [value]="querySummary.id">{{ querySummary.name }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div fxLayout="row" fxFlex fxLayoutAlign="space-between start">
                 <mat-form-field fxFlex="65">
-                    <mat-select placeholder="Name">
-                        <mat-option *ngFor="let query of querys" [value]="query">{{ query }}</mat-option>
-                    </mat-select>
+                    <input matInput placeholder="Name" [value]="selectedQuery.name">
                 </mat-form-field>
                 <mat-form-field fxFlex="30">
-                    <mat-select placeholder="Id">
-                        <input matInput placeholder="Id" value="id">
-                    </mat-select>
+                    <input matInput readonly placeholder="Id" [value]="selectedQuery.id">
                 </mat-form-field>
             </div>
             <mat-form-field fxFill>
-                <textarea matInput matTextareaAutosize matAutosizeMinRows="16" placeholder="Query"></textarea>
+                <textarea matInput matTextareaAutosize matAutosizeMinRows="16" placeholder="Query" [(value)]="selectedQuery.query"></textarea>
             </mat-form-field>
         </div>
     </mat-card-content>

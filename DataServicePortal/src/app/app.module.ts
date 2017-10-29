@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpModule } from '@angular/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatCardModule } from '@angular/material';
@@ -25,6 +26,7 @@ import 'hammerjs';
     [
         BrowserModule,
         BrowserAnimationsModule,
+        HttpModule,
         FlexLayoutModule,
         MatCardModule,
         MatFormFieldModule,
