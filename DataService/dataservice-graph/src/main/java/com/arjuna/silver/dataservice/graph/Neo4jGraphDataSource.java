@@ -23,6 +23,7 @@ import org.neo4j.driver.v1.GraphDatabase;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
+import org.neo4j.driver.v1.types.Node;
 import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.util.Pair;
 import com.arjuna.silver.dataservice.common.GraphDataSourceDef;
@@ -68,7 +69,7 @@ public class Neo4jGraphDataSource implements GraphDataSource
         try
         {
             GraphDataSourceDef graphDataSourceDef = _graphDataSourceDefStore.getGraphDataSourceDef(dataSourceId);
-            
+
             if (graphDataSourceDef != null)
             {
                 Driver  driver  = GraphDatabase.driver("bolt://" + _neo4jHostName + ":" + _neo4jPortNumber, AuthTokens.basic(_neo4jUsername, _neo4jPassword));
@@ -96,14 +97,14 @@ public class Neo4jGraphDataSource implements GraphDataSource
                         else
                             writer.print(',');
 
-                        writeKey(pair.key(), writer);
+                        writeKey(pair.key(), session, writer);
                         writer.print(":");
-                        writeValue(pair.value(), writer);
+                        writeValue(pair.value(), session, writer);
                     }
                 }
                 writer.println(']');
                 writer.flush();
-    
+
                 session.close();
                 driver.close();
             }
@@ -126,18 +127,46 @@ public class Neo4jGraphDataSource implements GraphDataSource
         }
     }
 
-    private void writeKey(String key, PrintWriter writer)
+    private void writeKey(String key, Session session, PrintWriter writer)
     {
         writer.print('"');
         writer.print(key);
         writer.print('"');
     }
 
-    private void writeValue(Value value, PrintWriter writer)
+    private void writeValue(Value value, Session session, PrintWriter writer)
     {
-        writer.print('"');
-        writer.print(value.asString());
-        writer.print('"');
+        if (value.hasType(session.typeSystem().NUMBER()))
+        {
+            writer.print('"');
+            writer.print(value.asString());
+            writer.print('"');
+        }
+        else if (value.hasType(session.typeSystem().NUMBER()))
+        {
+            Node node = value.asNode();
+
+            Map<String, Object> map = node.asMap();
+
+            boolean firstItem = true;
+            writer.print('{');
+            for (Map.Entry<String, Object> entity: map.entrySet())
+            {
+                if (firstItem)
+                    firstItem = false;
+                else
+                    writer.print(',');
+
+                writer.print('"');
+                writer.print(entity.getKey());
+                writer.print("\":\"");
+                writer.print(entity.getValue().toString());
+                writer.print('"');
+            }
+            writer.print('}');
+        }
+        else
+            writer.print("\"*** Unknown Type ***\"");
     }
 
     private String _neo4jUsername;
