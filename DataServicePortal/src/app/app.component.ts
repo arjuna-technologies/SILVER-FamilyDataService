@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 
-import { v4 } from 'uuid';
-
 import { QuerySummaryModel } from './model/query-summary-model';
 import { QueryModel } from './model/query-model';
 
@@ -50,7 +48,7 @@ export class AppComponent
 
     public doNewQueryDef(): void
     {
-        this.selectedQuery.id    = v4();
+        this.selectedQuery.id    = '';
         this.selectedQuery.name  = '';
         this.selectedQuery.query = '';
     }
@@ -70,7 +68,7 @@ export class AppComponent
     {
         const id = this.selectedQuery.id;
 
-        this.selectedQuery.id    = v4();
+        this.selectedQuery.id    = '';
         this.selectedQuery.name  = '';
         this.selectedQuery.query = '';
 
