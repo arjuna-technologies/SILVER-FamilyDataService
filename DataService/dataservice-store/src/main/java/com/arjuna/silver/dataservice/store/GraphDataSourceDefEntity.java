@@ -7,6 +7,7 @@ package com.arjuna.silver.dataservice.store;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Column;
 
 @Entity
@@ -62,6 +63,7 @@ public class GraphDataSourceDefEntity implements Serializable
     @Column(name = "name")
     protected String _name;
 
+    @Lob
     @Column(name = "query")
     protected String _query;
 }
