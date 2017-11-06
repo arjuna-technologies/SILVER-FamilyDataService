@@ -24,7 +24,9 @@ import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.types.Node;
+import org.neo4j.driver.v1.types.Relationship;
 import org.neo4j.driver.v1.Value;
+import org.neo4j.driver.v1.exceptions.ClientException;
 import org.neo4j.driver.v1.util.Pair;
 import com.arjuna.silver.dataservice.common.GraphDataSourceDef;
 import com.arjuna.silver.dataservice.common.InvalidGraphDataSourceException;
@@ -118,7 +120,15 @@ public class Neo4jGraphDataSource implements GraphDataSource
         }
         catch (InvalidGraphDataSourceException invalidGraphDataSourceException)
         {
+            writer.flush();
+
             throw invalidGraphDataSourceException;
+        }
+        catch (ClientException clientException)
+        {
+            writer.flush();
+
+            throw new InvalidGraphDataSourceException("Neo4j problems: " + clientException.getMessage(), dataSourceId);
         }
         catch (Throwable throwable)
         {
@@ -165,6 +175,25 @@ public class Neo4jGraphDataSource implements GraphDataSource
                 writer.print('"');
             }
             writer.print('}');
+        }
+        else if (value.hasType(session.typeSystem().RELATIONSHIP()))
+        {
+            Relationship relationship = value.asRelationship();
+
+            long startNodeId = relationship.startNodeId();
+            long endNodeId   = relationship.endNodeId();
+
+            Value startNodeValue = null;
+            Value endNodeValue   = null;
+            
+            writer.print("{{\"start\":\"");
+            writer.print(startNodeId);
+            writer.print("\"},{\"end\":\"");
+            writer.print(endNodeId);
+            writer.print("\"}");
+            writer.print("{\"_type\":\"");
+            writer.print(relationship.type());
+            writer.print("\"}}");
         }
         else
             writer.print("\"*** Unknown Type ***\"");
