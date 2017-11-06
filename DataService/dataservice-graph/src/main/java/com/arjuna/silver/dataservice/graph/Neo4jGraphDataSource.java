@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -158,6 +159,27 @@ public class Neo4jGraphDataSource implements GraphDataSource
             Node node = value.asNode();
 
             Map<String, Object> map = node.asMap();
+
+            boolean firstItem = true;
+            writer.print('{');
+            for (Map.Entry<String, Object> entity: map.entrySet())
+            {
+                if (firstItem)
+                    firstItem = false;
+                else
+                    writer.print(',');
+
+                writer.print('"');
+                writer.print(entity.getKey());
+                writer.print("\":\"");
+                writer.print(entity.getValue().toString());
+                writer.print('"');
+            }
+            writer.print('}');
+        }
+        else if (value.hasType(session.typeSystem().MAP()))
+        {
+            Map<String, Object> map = value.asMap();
 
             boolean firstItem = true;
             writer.print('{');
