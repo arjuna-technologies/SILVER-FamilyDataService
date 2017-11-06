@@ -196,7 +196,7 @@ public class Neo4jGraphDataSource implements GraphDataSource
             writer.print("\"}}");
         }
         else
-            writer.print("\"*** Unknown Type ***\"");
+            writer.print("\"*** Unknown Type " + value.type().name() + " ***\"");
     }
 
     private String _neo4jUsername;
