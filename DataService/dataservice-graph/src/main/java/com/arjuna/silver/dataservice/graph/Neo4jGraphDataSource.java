@@ -177,6 +177,8 @@ public class Neo4jGraphDataSource implements GraphDataSource
             }
             writer.print('}');
         }
+        else if (value.hasType(session.typeSystem().NULL()))
+            writer.print("null");
         else if (value.hasType(session.typeSystem().MAP()))
         {
             Map<String, Object> map = value.asMap();
@@ -207,7 +209,7 @@ public class Neo4jGraphDataSource implements GraphDataSource
 
             Value startNodeValue = null;
             Value endNodeValue   = null;
-            
+
             writer.print("{{\"start\":\"");
             writer.print(startNodeId);
             writer.print("\"},{\"end\":\"");
