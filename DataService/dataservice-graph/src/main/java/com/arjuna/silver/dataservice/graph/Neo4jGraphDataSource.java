@@ -181,15 +181,11 @@ public class Neo4jGraphDataSource implements GraphDataSource
         {
             Map<String, Object> map = value.asMap();
 
-            boolean firstItem = true;
-            writer.print('{');
+            writer.print("{\"_type\":\"");
+            writer.print(value.type().name());
+            writer.print("\",");
             for (Map.Entry<String, Object> entity: map.entrySet())
             {
-                if (firstItem)
-                    firstItem = false;
-                else
-                    writer.print(',');
-
                 writer.print('"');
                 writer.print(entity.getKey());
                 writer.print("\":\"");
