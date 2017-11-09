@@ -162,12 +162,12 @@ public class Neo4jGraphDataSource implements GraphDataSource
 
             writer.print("{\"_id\":\"");
             writer.print(node.id());
-            writer.print("\",_type\":\"");
+            writer.print("\",\"_type\":\"");
             writer.print(value.type().name());
-            writer.print("\",");
+            writer.print('"');
             for (Map.Entry<String, Object> entity: map.entrySet())
             {
-                writer.print('"');
+                writer.print(",\"");
                 writer.print(entity.getKey());
                 writer.print("\":\"");
                 writer.print(entity.getValue().toString());
@@ -183,10 +183,10 @@ public class Neo4jGraphDataSource implements GraphDataSource
 
             writer.print("{\"_type\":\"");
             writer.print(value.type().name());
-            writer.print("\",");
+            writer.print('"');
             for (Map.Entry<String, Object> entity: map.entrySet())
             {
-                writer.print('"');
+                writer.print(",\"");
                 writer.print(entity.getKey());
                 writer.print("\":\"");
                 writer.print(entity.getValue().toString());
