@@ -15,7 +15,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -30,14 +33,22 @@ import javax.ws.rs.core.UriInfo;
 import com.arjuna.silver.dataservice.common.InvalidGraphDataSourceException;
 import com.arjuna.silver.dataservice.graph.GraphDataSource;
 
-@Path("/data")
+@Path("/family-data")
 @Stateless
 public class GraphDataSourceWS
 {
     private static final Logger logger = Logger.getLogger(GraphDataSourceWS.class.getName());
 
+    @POST
+    @Path("/{datasourceid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createData(@PathParam("datasourceid") String dataSourceId, @Context UriInfo uriInfo)
+    {
+        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    }
+
     @GET
-    @Path("/data/{datasourceid}")
+    @Path("/{datasourceid}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getData(@PathParam("datasourceid") String dataSourceId, @Context UriInfo uriInfo)
     {
@@ -83,12 +94,34 @@ public class GraphDataSourceWS
 
             return Response.ok(stream).build();
         }
+//        catch (InvalidGraphDataSourceException invalidGraphDataSourceException)
+//        {
+//            logger.log(Level.WARNING, "GraphDataSourceWS.getData: Not Found", invalidGraphDataSourceException);
+//
+//            return Response.status(Status.NOT_FOUND).build();
+//        }
         catch (Throwable throwable)
         {
             logger.log(Level.WARNING, "GraphDataSourceWS.getData: Unexpected Problem", throwable);
 
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @PUT
+    @Path("/{datasourceid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateData(@PathParam("datasourceid") String dataSourceId, @Context UriInfo uriInfo)
+    {
+        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    }
+
+    @DELETE
+    @Path("/{datasourceid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteData(@PathParam("datasourceid") String dataSourceId)
+    {
+        return Response.status(Status.INTERNAL_SERVER_ERROR).build();
     }
 
     @EJB(beanName="Neo4jGraphDataSource")
